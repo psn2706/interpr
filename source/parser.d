@@ -237,7 +237,16 @@ Expression parseExpression (ref Line line)
 			    UnaryOpExpression.Type.not :
 			    UnaryOpExpression.Type.complement;
 			line.tokens.popFront ();
-			auto next = parse7 ();
+			check (!line.tokens.empty, line, "end of line in expression");
+			Expression next;
+			if (line.tokens.front != "9223372036854775808" || type!=UnaryOpExpression.Type.minus) 
+				next = parse7();
+			else
+			{
+				next = new ConstExpression
+					(("-"~line.tokens.front).to !(long));
+				line.tokens.popFront ();
+			} 
 			return new UnaryOpExpression (type, next);
 		}
 		else

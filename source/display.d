@@ -66,7 +66,10 @@ void display (Expression e)
 		auto cur = cast (ConstExpression) (e);
 		if (cur !is null)
 		{
-			write (cur.value);
+			if (cur.value != -9223372036854775808)
+				write (cur.value);
+			else
+				write("9223372036854775808");
 		}
 	}
 }
